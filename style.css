@@ -1,0 +1,968 @@
+/* ===== GENERAL ===== */
+
+body {
+    background-color: black;
+    font-family: Arial, sans-serif;
+    color: white;
+    margin: 0;
+    min-height: 100vh;
+}
+
+button {
+    background-color: #5a0f24;
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7a1733;
+}
+
+a {
+    color: #8b5cf6;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #b084ff;
+    text-decoration: underline;
+}
+
+
+/* ===== HOME PAGE ===== */
+
+.welcome {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+
+    padding: 60px;
+    box-sizing: border-box;
+}
+
+.welcome h1 {
+    font-size: 110px;
+    margin: 0 0 30px;
+    color: #5a0f24;
+}
+
+.welcome p {
+    font-size: 30px;
+    margin: 0 0 50px;
+    color: white;
+}
+
+.buttons {
+    display: flex;
+    gap: 25px;
+}
+
+.buttons button {
+    font-size: 22px;
+    padding: 20px 45px;
+    border-radius: 35px;
+}
+
+
+/* ===== ACCOUNT PAGES ===== */
+
+.account-page {
+    width: min(90%, 500px);
+
+    margin: 0 auto;
+
+    padding: 100px 0;
+
+    box-sizing: border-box;
+}
+
+.account-page h1 {
+    font-size: 50px;
+    color: #5a0f24;
+    margin-bottom: 15px;
+}
+
+.account-page > p {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 30px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    color: white;
+    text-align: left;
+    font-size: 17px;
+    margin-top: 10px;
+}
+
+input {
+    padding: 15px;
+
+    border: 1px solid #5a0f24;
+    border-radius: 10px;
+
+    background-color: #181818;
+    color: white;
+
+    font-size: 16px;
+
+    box-sizing: border-box;
+}
+
+input::placeholder {
+    color: #aaaaaa;
+}
+
+form button {
+    margin-top: 20px;
+}
+
+#successMessage,
+#loginMessage {
+    color: white;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+
+/* ===== DASHBOARD ===== */
+
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 230px;
+
+    background-color: #5a0f24;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+
+    margin-bottom: 40px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar nav a {
+    color: white;
+    text-decoration: none;
+
+    padding: 12px 15px;
+
+    border-radius: 10px;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+    background-color: #7a1733;
+}
+
+.sidebar nav .logout {
+    margin-top: auto;
+}
+
+.main-content {
+    flex: 1;
+
+    background-color: black;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+.topbar {
+    border-bottom: 1px solid #5a0f24;
+
+    padding-bottom: 20px;
+}
+
+.topbar h1 {
+    color: #5a0f24;
+
+    font-size: 32px;
+}
+
+.welcome-box {
+    background-color: #181818;
+
+    margin-top: 30px;
+
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+.welcome-box p {
+    color: white;
+    font-size: 18px;
+}
+
+
+/* ===== MESSAGES ===== */
+
+.messages-page {
+    display: flex;
+
+    height: calc(100vh - 120px);
+
+    gap: 15px;
+}
+
+
+/* PEOPLE */
+
+.people-list {
+    width: 250px;
+
+    flex-shrink: 0;
+
+    background-color: #181818;
+
+    padding: 20px;
+
+    box-sizing: border-box;
+
+    border-radius: 15px;
+}
+
+.people-list h2 {
+    color: white;
+
+    font-size: 20px;
+
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.person {
+    width: 100%;
+
+    background-color: #101010;
+
+    color: white;
+
+    border: 1px solid #5a0f24;
+
+    border-radius: 10px;
+
+    padding: 15px;
+
+    margin: 6px 0;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+.person:hover {
+    background-color: #5a0f24;
+}
+
+
+/* CHAT */
+
+.chat-box {
+    flex: 1;
+
+    min-width: 0;
+
+    background-color: #181818;
+
+    border-radius: 15px;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+/* CHAT HEADER */
+
+.chat-header {
+    padding: 20px;
+
+    border-bottom: 1px solid #5a0f24;
+
+    flex-shrink: 0;
+}
+
+.chat-header h2 {
+    color: white;
+
+    margin: 0;
+
+    font-size: 20px;
+}
+
+
+/* MESSAGES AREA */
+
+.messages-area {
+    flex: 1;
+
+    padding: 25px;
+
+    overflow-y: auto;
+}
+
+.empty-chat {
+    color: #aaaaaa;
+
+    text-align: center;
+
+    margin-top: 100px;
+}
+
+
+/* MESSAGE INPUT */
+
+.message-form {
+    display: flex;
+
+    gap: 10px;
+
+    padding: 15px;
+
+    border-top: 1px solid #5a0f24;
+
+    flex-shrink: 0;
+}
+
+.message-form input {
+    flex: 1;
+
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+.message-form button {
+    margin: 0;
+
+    flex-shrink: 0;
+}
+/* MY MESSAGE */
+
+.my-message{
+
+background:#5a0f24;
+
+color:white;
+
+padding:14px 18px;
+
+border-radius:18px;
+
+margin:12px 0;
+
+width:fit-content;
+
+max-width:70%;
+
+margin-left:auto;
+
+word-wrap:break-word;
+
+}
+
+/* ===== MESSAGE PREVIEWS ===== */
+
+.person {
+    position: relative;
+    padding-right: 55px;
+}
+
+.person strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.preview {
+    display: block;
+
+    color: #aaaaaa;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    max-width: 150px;
+}
+
+.preview-time {
+    position: absolute;
+
+    right: 12px;
+    top: 15px;
+
+    color: #888888;
+
+    font-size: 11px;
+}
+
+
+/* ===== MESSAGE GROUPING ===== */
+
+.message-wrapper {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    margin: 5px 0;
+
+    position: relative;
+}
+
+
+/* MESSAGE BUBBLE */
+
+.my-message {
+    background-color: #5a0f24;
+
+    color: white;
+
+    padding: 12px 16px;
+
+    border-radius: 18px;
+
+    max-width: 70%;
+
+    word-wrap: break-word;
+
+    cursor: grab;
+
+    touch-action: pan-y;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+/* ===== CENTERED TIME ===== */
+
+.time-separator {
+    width: 100%;
+
+    text-align: center;
+
+    color: #888888;
+
+    font-size: 12px;
+
+    margin: 18px 0;
+}
+
+
+/* ===== CENTERED DAY ===== */
+
+.date-separator {
+    width: 100%;
+
+    text-align: center;
+
+    color: #aaaaaa;
+
+    font-size: 12px;
+
+    margin: 20px 0;
+}
+
+
+/* ===== HIDDEN EXACT TIME ===== */
+
+.exact-message-time {
+    position: absolute;
+
+    right: 0;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%)
+        translateX(10px);
+
+    opacity: 0;
+
+    color: #888888;
+
+    font-size: 11px;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+/* ===== WHEN SWIPED ===== */
+
+.message-wrapper.show-exact-time
+.my-message {
+
+    transform:
+        translateX(-45px);
+
+}
+
+
+.message-wrapper.show-exact-time
+.exact-message-time {
+
+    opacity: 1;
+
+    transform:
+        translateY(-50%)
+        translateX(0);
+
+}
+
+/* =========================================
+   FINAL MESSAGES DESIGN
+   ========================================= */
+
+
+/* PEOPLE BUTTONS */
+
+.person {
+    position: relative;
+    width: 100%;
+    min-height: 65px;
+
+    padding: 12px 55px 12px 15px;
+
+    text-align: left;
+}
+
+
+.person strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+
+.preview {
+    display: block;
+
+    max-width: 150px;
+
+    color: #aaaaaa;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.preview-time {
+    position: absolute;
+
+    right: 12px;
+    top: 15px;
+
+    color: #888888;
+
+    font-size: 11px;
+}
+
+
+/* =========================================
+   CHAT MESSAGES
+   ========================================= */
+
+.message-wrapper {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    position: relative;
+
+    margin: 5px 0;
+}
+
+
+.my-message {
+    background-color: #5a0f24;
+
+    color: white;
+
+    padding: 12px 16px;
+
+    border-radius: 18px;
+
+    max-width: 70%;
+
+    word-wrap: break-word;
+
+    cursor: grab;
+
+    touch-action: pan-y;
+
+    user-select: none;
+
+    transition: transform 0.2s ease;
+}
+
+
+/* =========================================
+   CENTERED TIME
+   ========================================= */
+
+.time-separator {
+    width: 100%;
+
+    text-align: center;
+
+    color: #888888;
+
+    font-size: 12px;
+
+    margin: 18px 0;
+}
+
+
+/* =========================================
+   CENTERED DAY
+   ========================================= */
+
+.date-separator {
+    width: 100%;
+
+    text-align: center;
+
+    color: #aaaaaa;
+
+    font-size: 12px;
+
+    margin: 20px 0;
+}
+
+
+/* =========================================
+   HIDDEN EXACT MESSAGE TIME
+   ========================================= */
+
+.exact-message-time {
+    position: absolute;
+
+    right: 0;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%)
+        translateX(10px);
+
+    opacity: 0;
+
+    color: #888888;
+
+    font-size: 11px;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.message-wrapper.show-exact-time
+.my-message {
+
+    transform: translateX(-45px);
+
+}
+
+
+.message-wrapper.show-exact-time
+.exact-message-time {
+
+    opacity: 1;
+
+    transform:
+        translateY(-50%)
+        translateX(0);
+
+}
+
+
+/* =========================================
+   EMOJI PICKER
+   ========================================= */
+
+.message-form {
+    position: relative;
+}
+
+
+.emoji-button {
+    margin: 0;
+
+    width: 45px;
+
+    padding: 10px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 20px;
+
+    background-color: #101010;
+}
+
+
+.emoji-button:hover {
+    background-color: #5a0f24;
+}
+
+
+.emoji-picker {
+    display: none;
+
+    position: absolute;
+
+    bottom: 70px;
+
+    left: 10px;
+
+    width: 220px;
+
+    padding: 12px;
+
+    background-color: #101010;
+
+    border: 1px solid #5a0f24;
+
+    border-radius: 15px;
+
+    box-sizing: border-box;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 6px;
+
+    z-index: 20;
+}
+
+
+.emoji-picker.open {
+    display: grid;
+}
+
+
+.emoji-picker button {
+    margin: 0;
+
+    padding: 8px;
+
+    background-color: transparent;
+
+    font-size: 20px;
+
+    border-radius: 8px;
+}
+
+
+.emoji-picker button:hover {
+    background-color: #5a0f24;
+}
+
+
+/* =========================================
+   DELETE BUTTON
+   ========================================= */
+
+.delete-message {
+    display: none;
+
+    margin-top: 4px;
+
+    padding: 4px 9px;
+
+    background: #30101b;
+
+    color: white;
+
+    border: none;
+
+    font-size: 11px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.delete-message.visible {
+    display: block;
+}
+
+
+.delete-message:hover {
+    background: #5a0f24;
+}
+
+.add-person-area {
+    position: sticky;
+
+    top: 0;
+
+    z-index: 5;
+
+    padding-bottom: 10px;
+
+    background-color: #181818;
+}
+
+
+.add-person-button {
+    width: 100%;
+
+    margin: 0;
+
+    padding: 10px;
+
+    border-radius: 20px;
+
+    background-color: #6b0f2b;
+
+    color: white;
+
+    border: none;
+
+    cursor: pointer;
+}
+
+
+.add-person-button:hover {
+    background-color: #801336;
+}
+
+#noteContent {
+    width: 100%;
+    height: 450px;
+    padding: 15px;
+    box-sizing: border-box;
+    background-color: #0a0a0a;
+    color: white;
+    border: 1px solid #6d0f2d;
+    border-radius: 8px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+}
+
+/* =========================================
+   NOTES
+========================================= */
+
+.note-editor {
+    display: none;
+    margin-bottom: 25px;
+}
+
+.note-editor.open {
+    display: block;
+}
+
+.note-editor input,
+.note-editor textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 12px;
+    padding: 12px;
+}
+
+.note-editor textarea {
+    min-height: 180px;
+    resize: vertical;
+}
+
+.note-editor-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.note-card {
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.note-card h3 {
+    margin-top: 0;
+}
+
+.note-card p {
+    white-space: pre-wrap;
+}
+
+.note-card small {
+    display: block;
+    margin-top: 15px;
+}
+
+.note-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.note-buttons button,
+.new-note-button {
+    cursor: pointer;
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Messages - Between Us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <aside class="sidebar">
+
+            <div class="logo">Between Us</div>
+
+            <nav>
+                <a href="dashboard.html">Home</a>
+                <a href="messages.html" class="active">Messages</a>
+                <a href="#">Letters</a>
+                <a href="notes.html">Notes</a>
+                <a href="#">Settings</a>
+                <a href="index.html" class="logout">Log Out</a>
+            </nav>
+
+        </aside>
+
+
+        <main class="main-content">
+
+            <header class="topbar">
+                <h1>Messages</h1>
+            </header>
+
+
+            <section class="messages-page">
+
+                <!-- PEOPLE -->
+
+                <div class="people-list">
+
+             <h2>People</h2>
+
+                <div class="add-person-area">
+
+                    <button
+                          type="button"
+                          class="add-person-button"
+                          id="addPersonButton"
+        >
+                     + Add Person
+                   </button>
+
+                    </div>
+
+                   
+
+                       
+                </div>
+
+
+                <!-- CHAT -->
+
+                <div class="chat-box">
+
+                    <div class="chat-header">
+
+                        <h2 id="currentChat">
+                            Current Chat
+                        </h2>
+
+                    </div>
+
+
+                    <div
+                        class="messages-area"
+                        id="messagesArea"
+                    >
+
+                        <p class="empty-chat">
+                            Select someone to start chatting.
+                        </p>
+
+                    </div>
+
+
+                    <form class="message-form">
+
+                        <button
+                            type="button"
+                            class="emoji-button"
+                            id="emojiButton"
+                        >
+                            ☺
+                        </button>
+
+
+                        <div
+                            class="emoji-picker"
+                            id="emojiPicker"
+                        >
+
+                            <button type="button">❤️</button>
+                            <button type="button">😭</button>
+                            <button type="button">😂</button>
+                            <button type="button">🥹</button>
+                            <button type="button">😔</button>
+                            <button type="button">😡</button>
+                            <button type="button">😘</button>
+                            <button type="button">💜</button>
+                            <button type="button">✨</button>
+                            <button type="button">🫶</button>
+                            <button type="button">😭</button>
+                            <button type="button">🤍</button>
+
+                        </div>
+
+
+                        <input
+                            type="text"
+                            id="messageInput"
+                            placeholder="Write a message..."
+                            autocomplete="off"
+                        >
+
+
+                        <button type="submit">
+                            Send
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

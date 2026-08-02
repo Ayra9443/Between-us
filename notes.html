@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notes - Between Us</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="dashboard">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                Between Us
+            </div>
+
+            <nav>
+
+                <a href="dashboard.html">
+                    Home
+                </a>
+
+                <a href="messages.html">
+                    Messages
+                </a>
+
+                <a href="#">
+                    Letters
+                </a>
+
+                <a href="notes.html" class="active">
+                    Notes
+                </a>
+
+                <a href="#">
+                    Settings
+                </a>
+
+                <a href="index.html" class="logout">
+                    Log Out
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- MAIN CONTENT -->
+
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <h1>
+                    Notes
+                </h1>
+
+            </header>
+
+
+            <section class="notes-page">
+
+                <!-- NOTES HEADER -->
+
+                <div class="notes-heading">
+
+                    <div>
+
+                        <h2>
+                            Your Notes
+                        </h2>
+
+                        <p>
+                            Keep little thoughts and reminders
+                            in your private space.
+                        </p>
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="new-note-button"
+                        id="newNoteButton"
+                    >
+                        + New Note
+                    </button>
+
+                </div>
+
+
+                <!-- NEW NOTE FORM -->
+
+                <div
+                    class="note-editor"
+                    id="noteEditor"
+                >
+
+                    <input
+                        type="text"
+                        id="noteTitle"
+                        placeholder="Note title..."
+                        maxlength="100"
+                    >
+
+
+                    <textarea
+                        id="noteContent"
+                        placeholder="Write your note..."
+                    ></textarea>
+
+
+                    <div class="note-editor-buttons">
+
+                        <button
+                            type="button"
+                            id="cancelNoteButton"
+                        >
+                            Cancel
+                        </button>
+
+
+                        <button
+                            type="button"
+                            id="saveNoteButton"
+                        >
+                            Save Note
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NOTES -->
+
+                <div
+                    class="notes-container"
+                    id="notesContainer"
+                >
+
+                    <p
+                        class="no-notes"
+                        id="noNotes"
+                    >
+                        You don't have any notes yet.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
