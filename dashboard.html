@@ -62,14 +62,17 @@
 
 <script>
 
-const loggedIn =
-    localStorage.getItem("betweenUsLoggedIn");
 
-if (loggedIn !== "true") {
+    const accountId =
+        localStorage.getItem("betweenUsCurrentAccount");
 
-    window.location.href = "login.html";
+    if (!accountId) {
 
-}
+        window.location.href = "login.html";
+
+    }
+
+</script>
 
 
 const SUPABASE_URL =
