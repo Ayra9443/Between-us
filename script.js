@@ -1191,17 +1191,20 @@ if (addPersonButton) {
 
             // FIND USER IN SUPABASE
 
-            const {
-                data: profile,
-                error: profileError
-            } =
-                await supabaseClient
-                    .from("profiles")
-                    .select(
-                        "id, username, display_name"
-                    )
-                    .eq("username", username)
-                    .maybeSingle();
+           const accountId =
+    localStorage.getItem("betweenUsCurrentAccount");
+
+if (!accountId) {
+    window.location.href = "login.html";
+    return;
+}
+
+const { data: profile, error } =
+    await supabaseClient
+        .from("profiles")
+        .select("username")
+        .eq("id", accountId)
+        .maybeSingle();
 
 
             if (profileError) {

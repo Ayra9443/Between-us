@@ -36,31 +36,108 @@
         <main class="main-content">
 
             <header class="topbar">
-                <h1>Welcome back 💜</h1>
-            </header>
 
-            <section class="welcome-box">
+    <h1>Welcome back 💜</h1>
 
-                <p>This is your private space.</p>
+    <div class="header-username">
+        @<span id="usernameDisplay">Loading...</span>
+    </div>
 
-                <p>Choose a section from the sidebar to get started.</p>
+</header>
 
-            </section>
+           <section class="welcome-box">
+
+    <p>This is your private space.</p>
+
+    <p>Choose a section from the sidebar to get started.</p>
+
+
+</section>
 
         </main>
 
     </div>
 
-    <script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    const loggedIn =
-        localStorage.getItem("betweenUsLoggedIn");
+<script>
 
-    if (loggedIn !== "true") {
+const loggedIn =
+    localStorage.getItem("betweenUsLoggedIn");
 
-        window.location.href = "login.html";
+if (loggedIn !== "true") {
+
+    window.location.href = "login.html";
+
+}
+
+
+const SUPABASE_URL =
+    "https://foiugwvndheatzznrrpl.supabase.co";
+
+const SUPABASE_ANON_KEY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZvaXVnd3ZuZGhlYXR6em5ycnBsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4MzE4MjUsImV4cCI6MjEwMTQwNzgyNX0.wr82Ybn61WegKzwg83-wUor95UGpaV2BBR3uoN--C68";
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_ANON_KEY
+    );
+
+
+async function loadUsername() {
+
+    const {
+        data: {
+            user
+        }
+    } =
+        await supabaseClient.auth.getUser();
+
+
+    if (!user) {
+
+        return;
 
     }
+
+
+    const {
+        data: profile,
+        error
+    } =
+        await supabaseClient
+            .from("profiles")
+            .select("username")
+            .eq("id", user.id)
+            .maybeSingle();
+
+
+    if (error) {
+
+        console.error(
+            "Could not load username:",
+            error
+        );
+
+        return;
+
+    }
+
+
+    if (profile) {
+
+        document.getElementById(
+            "usernameDisplay"
+        ).textContent =
+            "@" + profile.username;
+
+    }
+
+}
+
+
+loadUsername();
 
 </script>
 
