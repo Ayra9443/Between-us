@@ -1189,9 +1189,9 @@ if (addPersonButton) {
             }
 
 
-            // FIND USER IN SUPABASE
+         // FIND USER IN SUPABASE
 
-           const accountId =
+const accountId =
     localStorage.getItem("betweenUsCurrentAccount");
 
 if (!accountId) {
@@ -1199,53 +1199,54 @@ if (!accountId) {
     return;
 }
 
-const { data: profile, error } =
+const {
+    data: profile,
+    error: profileError
+} =
     await supabaseClient
         .from("profiles")
-        .select("username")
-        .eq("id", accountId)
+        .select("id, username, display_name")
+        .eq("username", username)
         .maybeSingle();
 
+if (profileError) {
 
-            if (profileError) {
+    alert(
+        "Could not find that account: " +
+        profileError.message
+    );
 
-                alert(
-                    "Could not find that account: " +
-                    profileError.message
-                );
+    return;
+}
 
-                return;
-            }
+if (!profile) {
 
+    alert(
+        "No Between Us account was found with that username."
+    );
 
-            if (!profile) {
-
-                alert(
-                    "No Between Us account was found with that username."
-                );
-
-                return;
-            }
+    return;
+}
 
 
-            // GET CURRENT USER
+// GET CURRENT USER
 
-            const {
-                data: {
-                    user
-                }
-            } =
-                await supabaseClient.auth.getUser();
+const {
+    data: {
+        user
+    }
+} =
+    await supabaseClient.auth.getUser();
 
 
-            if (!user) {
+if (!user) {
 
-                alert(
-                    "Please log in first."
-                );
+    alert(
+        "Please log in first."
+    );
 
-                return;
-            }
+    return;
+}
 
 
             // DON'T ADD YOURSELF
