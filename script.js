@@ -2,74 +2,102 @@
 // CREATE ACCOUNT
 // =========================================
 
-const form = document.getElementById("accountForm");
+const form =
+    document.getElementById("accountForm");
 
 if (form) {
 
     const successMessage =
         document.getElementById("successMessage");
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const name =
-            document.getElementById("name").value.trim();
+            const name =
+                document
+                    .getElementById("name")
+                    .value
+                    .trim();
 
-        const email =
-            document.getElementById("email").value.trim();
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
 
-        const password =
-            document.getElementById("password").value;
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
 
-        if (
-            name === "" ||
-            email === "" ||
-            password === ""
-        ) {
+
+            if (!name || !email || !password) {
+
+                successMessage.textContent =
+                    "Please fill in all the fields.";
+
+                return;
+            }
+
 
             successMessage.textContent =
-                "Please fill in all the fields.";
+                "Creating account...";
 
-            return;
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient.auth.signUp({
+
+                    email: email,
+
+                    password: password,
+
+                    options: {
+                        data: {
+                            username: name,
+                            display_name: name
+                        }
+                    }
+
+                });
+
+
+            if (error) {
+
+                successMessage.textContent =
+                    error.message;
+
+                return;
+            }
+
+
+            if (data.user) {
+
+                successMessage.textContent =
+                    "Account created successfully!";
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "login.html";
+
+                    },
+                    1000
+                );
+
+            }
+
         }
-
-        const existingAccount =
-            localStorage.getItem("betweenUsAccount");
-
-        if (existingAccount) {
-
-            successMessage.textContent =
-                "An account already exists on this browser.";
-
-            return;
-        }
-
-        const account = {
-            name: name,
-            email: email,
-            password: password
-        };
-
-        localStorage.setItem(
-            "betweenUsAccount",
-            JSON.stringify(account)
-        );
-
-        successMessage.textContent =
-            "Account created successfully!";
-
-        setTimeout(function() {
-
-            window.location.href =
-                "login.html";
-
-        }, 1000);
-
-    });
+    );
 
 }
-
 
 // =========================================
 // LOGIN
@@ -80,83 +108,188 @@ const loginForm =
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", function(event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const email =
-            document.getElementById("loginEmail").value.trim();
+            const email =
+                document
+                    .getElementById("loginEmail")
+                    .value
+                    .trim();
 
-        const password =
-            document.getElementById("loginPassword").value;
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
 
-        const loginMessage =
-            document.getElementById("loginMessage");
+            const loginMessage =
+                document.getElementById("loginMessage");
 
-        if (
-            email === "" ||
-            password === ""
-        ) {
 
-            loginMessage.textContent =
-                "Please fill in all the fields.";
+            if (!email || !password) {
 
-            return;
-        }
+                loginMessage.textContent =
+                    "Please fill in all the fields.";
 
-        const savedAccount =
-            localStorage.getItem("betweenUsAccount");
+                return;
+            }
 
-        if (!savedAccount) {
-
-            loginMessage.textContent =
-                "No account found. Please create an account first.";
-
-            return;
-        }
-
-        const account =
-            JSON.parse(savedAccount);
-
-        if (
-            email === account.email &&
-            password === account.password
-        ) {
-
-            localStorage.setItem(
-                "betweenUsLoggedIn",
-                "true"
-            );
 
             loginMessage.textContent =
-                "Login successful!";
+                "Signing in...";
 
-            setTimeout(function() {
 
-                window.location.href =
-                    "dashboard.html";
+            try {
 
-            }, 500);
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient.auth.signInWithPassword({
 
-        } else {
+                        email: email,
 
-            loginMessage.textContent =
-                "Incorrect email or password.";
+                        password: password
 
-        }
+                    });
 
-    });
+
+                if (error) {
+
+                    console.error(
+                        "Login error:",
+                        error
+                    );
+
+                    loginMessage.textContent =
+                        error.message;
+
+                    return;
+                }
+
+
+                console.log(
+                    "Login successful:",
+                    data
+                );
+
+                if (data.user) {
+
+    localStorage.setItem(
+        "betweenUsCurrentAccount",
+        data.user.id
+    );
 
 }
 
+
+                loginMessage.textContent =
+                    "Login successful!";
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "dashboard.html";
+
+                    },
+                    500
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "Unexpected login error:",
+                    error
+                );
+
+                loginMessage.textContent =
+                    "Something went wrong while logging in.";
+
+            }
+
+        }
+    );
+
+}
+
+
+
+// =========================================
+// LOG OUT
+// =========================================
+
+const logoutButton =
+    document.querySelector(".logout");
+
+if (logoutButton) {
+
+    logoutButton.addEventListener(
+        "click",
+        async function (event) {
+
+            event.preventDefault();
+
+            try {
+
+                await supabaseClient.auth.signOut();
+
+            } catch (error) {
+
+                console.error(
+                    "Logout error:",
+                    error
+                );
+
+            }
+            localStorage.removeItem(
+    "betweenUsCurrentAccount"
+);
+
+            window.location.href = "index.html";
+
+        }
+    );
+
+}
 
 // =========================================
 // SAVED PEOPLE
 // =========================================
 
+// Each account gets its own localStorage keys.
+const currentAccountId =
+    localStorage.getItem("betweenUsCurrentAccount") || "guest";
+
+const peopleStorageKey =
+    "betweenUsPeople_" + currentAccountId;
+
+const personIdsStorageKey =
+    "betweenUsPersonIds_" + currentAccountId;
+
+const conversationsStorageKey =
+    "betweenUsConversations_" + currentAccountId;
+
+
 let savedPeople = JSON.parse(
-    localStorage.getItem("betweenUsPeople")
+    localStorage.getItem(peopleStorageKey)
 ) || [];
+
+let savedPersonIds = JSON.parse(
+    localStorage.getItem(personIdsStorageKey)
+) || {};
+
+
+function savePersonIds() {
+    localStorage.setItem(
+        personIdsStorageKey,
+        JSON.stringify(savedPersonIds)
+    );
+}
 
 
 // =========================================
@@ -164,7 +297,7 @@ let savedPeople = JSON.parse(
 // =========================================
 
 let conversations = JSON.parse(
-    localStorage.getItem("betweenUsConversations")
+    localStorage.getItem(conversationsStorageKey)
 ) || {};
 
 
@@ -182,7 +315,7 @@ let selectedPerson = null;
 function savePeople() {
 
     localStorage.setItem(
-        "betweenUsPeople",
+        peopleStorageKey,
         JSON.stringify(savedPeople)
     );
 
@@ -192,7 +325,7 @@ function savePeople() {
 function saveConversations() {
 
     localStorage.setItem(
-        "betweenUsConversations",
+        conversationsStorageKey,
         JSON.stringify(conversations)
     );
 
@@ -414,44 +547,28 @@ function createTimeSeparator(date) {
 
 function renderMessages() {
 
+    if (!selectedPerson) return;
+
     const messagesArea =
         document.getElementById("messagesArea");
 
-    if (
-        !messagesArea ||
-        !selectedPerson
-    ) {
-
-        return;
-
-    }
-
-
-    messagesArea.innerHTML = "";
-
+    if (!messagesArea) return;
 
     const messages =
         conversations[selectedPerson] || [];
 
+    messagesArea.innerHTML = "";
 
     if (messages.length === 0) {
 
         messagesArea.innerHTML = `
-
             <p class="empty-chat">
-
-                No messages with
-                ${selectedPerson}
-                yet.
-
+                No messages with ${selectedPerson} yet.
             </p>
-
         `;
 
         return;
-
     }
-
 
     messages.forEach(function(message, index) {
 
@@ -462,17 +579,16 @@ function renderMessages() {
             new Date(message.time);
 
 
-        // NEW DAY
+        // ==============================
+        // DAY SEPARATOR
+        // ==============================
 
         if (
-
             !previous ||
-
             !isSameDay(
                 new Date(previous.time),
                 currentDate
             )
-
         ) {
 
             messagesArea.appendChild(
@@ -481,16 +597,15 @@ function renderMessages() {
 
         }
 
-
-        // DIFFERENT MINUTE
+        // ==============================
+        // TIME SEPARATOR
+        // ==============================
 
         else if (
-
             !isSameMinute(
                 new Date(previous.time),
                 currentDate
             )
-
         ) {
 
             messagesArea.appendChild(
@@ -500,7 +615,9 @@ function renderMessages() {
         }
 
 
+        // ==============================
         // MESSAGE WRAPPER
+        // ==============================
 
         const wrapper =
             document.createElement("div");
@@ -509,7 +626,9 @@ function renderMessages() {
             "message-wrapper";
 
 
+        // ==============================
         // MESSAGE BUBBLE
+        // ==============================
 
         const bubble =
             document.createElement("div");
@@ -521,7 +640,9 @@ function renderMessages() {
             message.text;
 
 
+        // ==============================
         // EXACT TIME
+        // ==============================
 
         const exactTime =
             document.createElement("span");
@@ -533,7 +654,9 @@ function renderMessages() {
             formatTime(currentDate);
 
 
+        // ==============================
         // DELETE BUTTON
+        // ==============================
 
         const deleteButton =
             document.createElement("button");
@@ -548,7 +671,9 @@ function renderMessages() {
             "button";
 
 
-        // RIGHT CLICK TO SHOW DELETE
+        // ==============================
+        // RIGHT CLICK → DELETE
+        // ==============================
 
         bubble.addEventListener(
             "contextmenu",
@@ -556,16 +681,17 @@ function renderMessages() {
 
                 event.preventDefault();
 
-                // Hide any other visible delete buttons
-
                 document
-                    .querySelectorAll(".delete-message.visible")
+                    .querySelectorAll(
+                        ".delete-message.visible"
+                    )
                     .forEach(function(button) {
 
-                        button.classList.remove("visible");
+                        button.classList.remove(
+                            "visible"
+                        );
 
                     });
-
 
                 deleteButton.classList.add(
                     "visible"
@@ -575,7 +701,9 @@ function renderMessages() {
         );
 
 
+        // ==============================
         // DELETE MESSAGE
+        // ==============================
 
         deleteButton.addEventListener(
             "click",
@@ -596,16 +724,30 @@ function renderMessages() {
         );
 
 
-        wrapper.appendChild(bubble);
+        // ==============================
+        // PUT EVERYTHING TOGETHER
+        // ==============================
 
-        wrapper.appendChild(exactTime);
+        wrapper.appendChild(
+            bubble
+        );
 
-        wrapper.appendChild(deleteButton);
+        wrapper.appendChild(
+            exactTime
+        );
 
-        messagesArea.appendChild(wrapper);
+        wrapper.appendChild(
+            deleteButton
+        );
+
+        messagesArea.appendChild(
+            wrapper
+        );
 
 
-        // SWIPE / HOLD TIME
+        // ==============================
+        // HOLD / SWIPE FOR EXACT TIME
+        // ==============================
 
         addSwipeBehavior(
             wrapper,
@@ -617,9 +759,7 @@ function renderMessages() {
 
     messagesArea.scrollTop =
         messagesArea.scrollHeight;
-
 }
-
 
 // =========================================
 // SWIPE / HOLD FOR EXACT TIME
@@ -856,10 +996,7 @@ function movePersonToTop(person) {
 // =========================================
 
 const messageForm =
-    document.querySelector(
-        ".message-form"
-    );
-
+    document.querySelector(".message-form");
 
 if (messageForm) {
 
@@ -869,87 +1006,67 @@ if (messageForm) {
 
             event.preventDefault();
 
-
-            const input =
+            const messageInput =
                 document.getElementById(
                     "messageInput"
                 );
 
-
-            if (!input) {
+            if (!messageInput) {
                 return;
             }
 
+            const text =
+                messageInput.value.trim();
 
-            const message =
-                input.value.trim();
-
-
-            if (message === "") {
+            if (!text) {
                 return;
             }
-
 
             if (!selectedPerson) {
-
                 alert(
-                    "Select someone to message first."
+                    "Please select someone first."
                 );
-
                 return;
-
             }
 
-
-            const newMessage = {
-
-                text: message,
-
-                time: new Date().toISOString()
-
-            };
-
-
+            // Create conversation if it doesn't exist
             if (!conversations[selectedPerson]) {
-
                 conversations[selectedPerson] = [];
-
             }
 
+            // Add message locally
+            conversations[selectedPerson].push({
 
-            conversations[selectedPerson]
-                .push(newMessage);
+                text: text,
 
+                sender: "me",
 
-            // SAVE MESSAGE
+                time:
+                    new Date().toISOString()
 
+            });
+
+            // Save to this account's localStorage
             saveConversations();
 
+            // Clear input
+            messageInput.value = "";
 
-            // UPDATE PREVIEW
-
+            // Update chat
             updatePersonPreview(
                 selectedPerson
             );
 
-
-            // MOVE PERSON TO TOP
-
-            movePersonToTop(
-                selectedPerson
-            );
-
-
-            input.value = "";
-
+            sortPeopleByRecent();
 
             renderMessages();
+
+            messageInput.focus();
 
         }
     );
 
 }
-
 
 // =========================================
 // EMOJI PICKER
@@ -1023,77 +1140,167 @@ if (
 // =========================================
 
 const addPersonButton =
-    document.getElementById(
-        "addPersonButton"
-    );
-
+    document.getElementById("addPersonButton");
 
 if (addPersonButton) {
 
     addPersonButton.addEventListener(
         "click",
-        function() {
+        async function () {
+
+            const usernameInput =
+                prompt(
+                    "Enter their Between Us username:"
+                );
+
+            if (!usernameInput) {
+                return;
+            }
+
+            const username =
+                usernameInput.trim();
+
+            if (username === "") {
+                return;
+            }
+
+
+            // CHECK IF ALREADY ADDED
+
+            const alreadyAdded =
+                savedPeople.some(
+                    function (person) {
+
+                        return (
+                            person.toLowerCase() ===
+                            username.toLowerCase()
+                        );
+
+                    }
+                );
+
+            if (alreadyAdded) {
+
+                alert(
+                    "This person is already in your list."
+                );
+
+                return;
+            }
+
+
+            // FIND USER IN SUPABASE
+
+            const {
+                data: profile,
+                error: profileError
+            } =
+                await supabaseClient
+                    .from("profiles")
+                    .select(
+                        "id, username, display_name"
+                    )
+                    .eq("username", username)
+                    .maybeSingle();
+
+
+            if (profileError) {
+
+                alert(
+                    "Could not find that account: " +
+                    profileError.message
+                );
+
+                return;
+            }
+
+
+            if (!profile) {
+
+                alert(
+                    "No Between Us account was found with that username."
+                );
+
+                return;
+            }
+
+
+            // GET CURRENT USER
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth.getUser();
+
+
+            if (!user) {
+
+                alert(
+                    "Please log in first."
+                );
+
+                return;
+            }
+
+
+            // DON'T ADD YOURSELF
+
+            if (profile.id === user.id) {
+
+                alert(
+                    "You can't add yourself."
+                );
+
+                return;
+            }
+
+
+            // SAVE PERSON
 
             const personName =
-                prompt("Enter their name:");
+                profile.username;
 
 
-            if (!personName) {
-                return;
+            savedPeople.push(
+                personName
+            );
+
+
+            // SAVE THEIR REAL SUPABASE ID
+
+            savedPersonIds[personName] =
+                profile.id;
+
+
+            // CREATE LOCAL CONVERSATION
+
+            if (!conversations[personName]) {
+
+                conversations[personName] = [];
+
             }
 
 
-            const name =
-                personName.trim();
+            savePeople();
+
+            savePersonIds();
+
+            saveConversations();
 
 
-            if (name === "") {
-                return;
-            }
-
+            // CREATE PERSON BUTTON
 
             const peopleList =
                 document.querySelector(
                     ".people-list"
                 );
 
-
             if (!peopleList) {
                 return;
             }
 
-
-            // CHECK DUPLICATES
-
-            const existingPeople =
-                peopleList.querySelectorAll(
-                    ".person"
-                );
-
-
-            for (
-                const person
-                of existingPeople
-            ) {
-
-                if (
-                    person.dataset.person
-                        .toLowerCase() ===
-                    name.toLowerCase()
-                ) {
-
-                    alert(
-                        "This person is already in your list."
-                    );
-
-                    return;
-
-                }
-
-            }
-
-
-            // CREATE BUTTON
 
             const personButton =
                 document.createElement(
@@ -1108,23 +1315,23 @@ if (addPersonButton) {
                 "person";
 
             personButton.dataset.person =
-                name;
+                personName;
 
 
             personButton.innerHTML = `
 
-                <strong>${name}</strong>
+                <strong>${personName}</strong>
 
                 <span
                     class="preview"
-                    id="preview-${name}"
+                    id="preview-${personName}"
                 >
                     No messages yet
                 </span>
 
                 <span
                     class="preview-time"
-                    id="time-${name}"
+                    id="time-${personName}"
                 ></span>
 
             `;
@@ -1132,61 +1339,35 @@ if (addPersonButton) {
 
             personButton.addEventListener(
                 "click",
-                function() {
+                function () {
 
-                    selectPerson(name);
+                    selectPerson(
+                        personName
+                    );
 
                 }
             );
 
-
-            // ADD TO LIST
 
             peopleList.appendChild(
                 personButton
             );
 
 
-            // CREATE CONVERSATION
-
-            if (!conversations[name]) {
-
-                conversations[name] = [];
-
-            }
-
-
-            // SAVE PERSON
-
-            if (
-                !savedPeople.some(
-                    function(person) {
-
-                        return person.toLowerCase() ===
-                            name.toLowerCase();
-
-                    }
-                )
-            ) {
-
-                savedPeople.push(name);
-
-            }
-
-
-            savePeople();
-
-            saveConversations();
-
-
             alert(
-                name + " has been added!"
+                personName +
+                " has been added!"
             );
 
         }
     );
 
 }
+
+
+    
+
+       
 
 
 // =========================================
@@ -1375,53 +1556,42 @@ function sortPeopleByRecent() {
 
 
 // =========================================
-// LOG OUT
-// =========================================
-
-const logoutButton =
-    document.querySelector(
-        ".logout"
-    );
-
-
-if (logoutButton) {
-
-    logoutButton.addEventListener(
-        "click",
-        function(event) {
-
-            event.preventDefault();
-
-
-            localStorage.removeItem(
-                "betweenUsLoggedIn"
-            );
-
-
-            window.location.href =
-                "index.html";
-
-        }
-    );
-
-}
-
-
-// =========================================
 // LOAD EVERYTHING WHEN PAGE OPENS
 // =========================================
 
 loadSavedPeople();
 
 sortPeopleByRecent();
-
 // =========================================
 // NOTES
 // =========================================
 
+let currentAccount = null;
+
+async function loadCurrentUser(){
+
+const { data } =
+await supabaseClient.auth.getUser();
+
+currentAccount =
+data.user;
+
+}
+
+loadCurrentUser();
+
+// Give each account its own notes storage key
+
+const notesStorageKey =
+    currentAccount
+        ? "betweenUsNotes_" + currentAccount.email
+        : "betweenUsNotes_guest";
+
+
 let savedNotes = JSON.parse(
-    localStorage.getItem("betweenUsNotes")
+    localStorage.getItem(notesStorageKey)
 ) || [];
+
 
 let editingNoteIndex = null;
 
@@ -1451,6 +1621,20 @@ const notesContainer =
 
 const noNotes =
     document.getElementById("noNotes");
+
+
+// =========================================
+// SAVE NOTES
+// =========================================
+
+function saveNotes() {
+
+    localStorage.setItem(
+        notesStorageKey,
+        JSON.stringify(savedNotes)
+    );
+
+}
 
 
 // =========================================
@@ -1576,12 +1760,9 @@ if (saveNoteButton) {
             }
 
 
-            // SAVE
+            // SAVE TO THIS ACCOUNT ONLY
 
-            localStorage.setItem(
-                "betweenUsNotes",
-                JSON.stringify(savedNotes)
-            );
+            saveNotes();
 
 
             // RESET
@@ -1754,13 +1935,7 @@ function renderNotes() {
                     );
 
 
-                    localStorage.setItem(
-                        "betweenUsNotes",
-                        JSON.stringify(
-                            savedNotes
-                        )
-                    );
-
+                    saveNotes();
 
                     renderNotes();
 
@@ -1808,4 +1983,4 @@ function renderNotes() {
 // LOAD NOTES
 // =========================================
 
-renderNotes();
+renderNotes();  
